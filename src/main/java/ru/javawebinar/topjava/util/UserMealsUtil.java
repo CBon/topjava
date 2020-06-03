@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.Month;
 import java.util.*;
+import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.*;
 
@@ -60,15 +61,13 @@ public class UserMealsUtil {
     public static List<UserMealWithExcess> filteredByStreams(List<UserMeal> meals, LocalTime startTime, LocalTime endTime, int caloriesPerDay) {
         return meals.stream()
                 .collect(groupingBy(u -> u.getDateTime().toLocalDate()))
-                .entrySet().stream()
-                .flatMap(m -> m.getValue().stream()
-                        .filter(u -> TimeUtil.isBetweenHalfOpen(u.getDateTime().toLocalTime(), startTime, endTime))
-                        .map(u ->
-                                new UserMealWithExcess(
-                                        u.getDateTime(),
-                                        u.getDescription(),
-                                        u.getCalories(),
-                                        m.getValue().stream().mapToInt(UserMeal::getCalories).sum() > caloriesPerDay)))
+                .values().stream()
+                .flatMap(l -> {
+                    boolean excess = l.stream().mapToInt(UserMeal::getCalories).sum() > caloriesPerDay;
+                    return l.stream()
+                            .filter(u -> TimeUtil.isBetweenHalfOpen(u.getDateTime().toLocalTime(), startTime, endTime))
+                            .map(u -> new UserMealWithExcess(u.getDateTime(), u.getDescription(), u.getCalories(), excess));
+                })
                 .collect(toList());
     }
 }
