@@ -9,7 +9,23 @@ public class MealTo {
 
     private final int calories;
 
-//    private final AtomicBoolean excess;      // filteredByAtomic
+    public LocalDateTime getDateTime() {
+        return dateTime;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public int getCalories() {
+        return calories;
+    }
+
+    public boolean isExcess() {
+        return excess;
+    }
+
+    //    private final AtomicBoolean excess;      // filteredByAtomic
 //    private final Boolean excess;            // filteredByReflection
 //    private final Supplier<Boolean> excess;  // filteredByClosure
     private final boolean excess;
