@@ -1,14 +1,16 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib uri="/FormatLocalDateTime" prefix="f" %>
+<%@ taglib prefix="f" uri="/FormatLocalDateTime"%>
 <html>
 <head>
     <link rel="stylesheet" href="css/style.css">
     <title>Meals</title>
 </head>
 <body>
+<h3><a href="index.html">Home</a></h3>
+<hr>
+<h2>List of meals</h2>
 <table>
-    <caption>List of meals</caption>
     <thead>
     <tr>
         <th>Description</th>
@@ -19,20 +21,10 @@
     <tbody>
     <jsp:useBean id="mealToList" scope="request" type="java.util.List"/>
     <c:forEach var="mealTo" items="${mealToList}">
-        <tr
-                <c:choose>
-                    <c:when test="${mealTo.isExcess() == true}">
-                        class="excess"
-                    </c:when>
-
-                    <c:when test="${mealTo.isExcess() == false}">
-                        class="normal"
-                    </c:when>
-                </c:choose>
-        >
-            <td>${mealTo.getDescription()}</td>
-            <td>${f:formatLocalDateTime(mealTo.getDateTime(),"dd.MM.yyyy HH:mm")}</td>
-            <td>${mealTo.getCalories()}</td>
+        <tr ${mealTo.excess ? 'class="excess"' : 'class="normal"'}>
+            <td>${mealTo.description}</td>
+            <td>${f:formatLocalDateTime(mealTo.dateTime)}</td>
+            <td>${mealTo.calories}</td>
         </tr>
     </c:forEach>
     </tbody>
