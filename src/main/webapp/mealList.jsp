@@ -8,6 +8,7 @@
 </head>
 <body>
 <h3><a href="index.html">Home</a></h3>
+<a href="meals?action=create">Add Meal</a>
 <hr>
 <h2>List of meals</h2>
 <table>
@@ -21,10 +22,13 @@
     <tbody>
     <jsp:useBean id="mealToList" scope="request" type="java.util.List"/>
     <c:forEach var="mealTo" items="${mealToList}">
-        <tr ${mealTo.excess ? 'class="excess"' : 'class="normal"'}>
+        <jsp:useBean id="mealTo" type="ru.javawebinar.topjava.model.MealTo"/>
+        <tr class="${mealTo.excess ? 'excess' : 'normal'}">
             <td>${mealTo.description}</td>
             <td>${f:formatLocalDateTime(mealTo.dateTime)}</td>
             <td>${mealTo.calories}</td>
+            <td><a href="meals?action=update&id=${mealTo.id}">Update</a></td>
+            <td><a href="meals?action=delete&id=${mealTo.id}">Delete</a></td>
         </tr>
     </c:forEach>
     </tbody>
