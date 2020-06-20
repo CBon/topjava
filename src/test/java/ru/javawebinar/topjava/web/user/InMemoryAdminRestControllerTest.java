@@ -3,6 +3,8 @@ package ru.javawebinar.topjava.web.user;
 import org.junit.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import ru.javawebinar.topjava.repository.inmemory.InMemoryUserRepository;
@@ -17,11 +19,12 @@ public class InMemoryAdminRestControllerTest {
 
     private static ConfigurableApplicationContext appCtx;
     private static AdminRestController controller;
+
     private static InMemoryUserRepository repository;
 
     @BeforeClass
     public static void beforeClass() {
-        appCtx = new ClassPathXmlApplicationContext("spring/spring-app.xml","spring/spring-db.xml");
+        appCtx = new ClassPathXmlApplicationContext("spring/spring-app.xml","spring-inMemory.xml");
         log.info("\n{}\n", Arrays.toString(appCtx.getBeanDefinitionNames()));
         controller = appCtx.getBean(AdminRestController.class);
         repository = appCtx.getBean(InMemoryUserRepository.class);

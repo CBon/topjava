@@ -36,7 +36,7 @@ public class MealsUtil {
     }
 
     public static List<MealTo> filterByPredicate(Collection<Meal> meals, int caloriesPerDay, Predicate<Meal> filter) {
-        return null;
+        return getFiltered(meals,caloriesPerDay,filter);
     }
 
     private static List<MealTo> getFiltered(Collection<Meal> meals, int caloriesPerDay, Predicate<Meal> filter) {
