@@ -28,26 +28,27 @@ public class MealTestData {
             new Meal(100008, LocalDateTime.of(2020, Month.MAY, 31, 20, 0), "Ужин", 510)
     );
 
-    public static User getNew() {
-        return new User(null, "New", "new@gmail.com", "newPass", 1555, false, new Date(), Collections.singleton(Role.USER));
+    public static Meal getNew() {
+        return new Meal(100008, LocalDateTime.of(2020, Month.MAY, 31, 20, 0), "Ужин", 510);
     }
 
-    public static User getUpdated() {
-        User updated = new User(USER);
-        updated.setName("UpdatedName");
-        updated.setCaloriesPerDay(330);
+    public static Meal getUpdated() {
+        Meal updated = getNew();
+        updated.setCalories(520);
+        updated.setDateTime(LocalDateTime.of(2020, Month.MAY, 31, 21, 0));
+        updated.setDescription("Поздний ужин");
         return updated;
     }
 
-    public static void assertMatch(User actual, User expected) {
-        assertThat(actual).isEqualToIgnoringGivenFields(expected, "registered", "roles");
+    public static void assertMatch(Meal actual, Meal expected) {
+        assertThat(actual).isEqualToIgnoringGivenFields(expected,"id" );
     }
 
-    public static void assertMatch(Iterable<User> actual, User... expected) {
+    public static void assertMatch(Iterable<Meal> actual, Meal... expected) {
         assertMatch(actual, Arrays.asList(expected));
     }
 
-    public static void assertMatch(Iterable<User> actual, Iterable<User> expected) {
-        assertThat(actual).usingElementComparatorIgnoringFields("registered", "roles").isEqualTo(expected);
+    public static void assertMatch(Iterable<Meal> actual, Iterable<Meal> expected) {
+        assertThat(actual).usingElementComparatorIgnoringFields("id").isEqualTo(expected);
     }
 }

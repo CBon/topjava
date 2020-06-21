@@ -7,31 +7,42 @@ CREATE SEQUENCE global_seq START WITH 100000;
 
 CREATE TABLE users
 (
-  id               INTEGER PRIMARY KEY DEFAULT nextval('global_seq'),
-  name             VARCHAR                 NOT NULL,
-  email            VARCHAR                 NOT NULL,
-  password         VARCHAR                 NOT NULL,
-  registered       TIMESTAMP DEFAULT now() NOT NULL,
-  enabled          BOOL DEFAULT TRUE       NOT NULL,
-  calories_per_day INTEGER DEFAULT 2000    NOT NULL
+    id               INTEGER PRIMARY KEY DEFAULT nextval('global_seq'),
+    name             VARCHAR                           NOT NULL,
+    email            VARCHAR                           NOT NULL,
+    password         VARCHAR                           NOT NULL,
+    registered       TIMESTAMP           DEFAULT now() NOT NULL,
+    enabled          BOOL                DEFAULT TRUE  NOT NULL,
+    calories_per_day INTEGER             DEFAULT 2000  NOT NULL
 );
 CREATE UNIQUE INDEX users_unique_email_idx ON users (email);
 
 CREATE TABLE user_roles
 (
-  user_id INTEGER NOT NULL,
-  role    VARCHAR,
-  CONSTRAINT user_roles_idx UNIQUE (user_id, role),
-  FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
+    user_id INTEGER NOT NULL,
+    role    VARCHAR,
+    CONSTRAINT user_roles_idx UNIQUE (user_id, role),
+    FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
 );
 
-create table if not exists meals
+CREATE TABLE meals
 (
-    user_id integer not null
-        constraint meals_users_id_fk
-            references users
-            on delete cascade,
-    description varchar not null,
-    datetime timestamp not null,
-    calories integer not null
+    user_id     INTEGER                                         NOT NULL
+        CONSTRAINT meals_users_id_fk
+            REFERENCES users
+            ON DELETE CASCADE,
+    description VARCHAR                                         NOT NULL,
+    datetime    TIMESTAMP                                       NOT NULL,
+    calories    INTEGER                                         NOT NULL,
+    id          INTEGER DEFAULT nextval('global_seq'::REGCLASS) NOT NULL
+        CONSTRAINT meals_pk
+            PRIMARY KEY
 );
+
+ALTER TABLE meals
+    OWNER TO "user";
+
+CREATE UNIQUE INDEX meals_id_uindex
+    ON meals (id);
+
+
