@@ -1,10 +1,13 @@
 package ru.javawebinar.topjava.service;
 
+import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestWatcher;
 import org.junit.runner.Description;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
@@ -12,6 +15,7 @@ import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.test.context.junit4.SpringRunner;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
+import ru.javawebinar.topjava.web.meal.MealRestController;
 
 import java.time.LocalDate;
 import java.time.Month;
@@ -28,16 +32,35 @@ import static ru.javawebinar.topjava.UserTestData.USER_ID;
 @RunWith(SpringRunner.class)
 @Sql(scripts = "classpath:db/populateDB.sql", config = @SqlConfig(encoding = "UTF-8"))
 public class MealServiceTest {
+    private static final Logger log = LoggerFactory.getLogger(MealRestController.class);
+    private static final StringBuilder reportBuilder = new StringBuilder().append('\n');
+
+    @ClassRule
+    public static final TestWatcher classWatcher = new TestWatcher() {
+        @Override
+        protected void finished(Description description) {
+            log.info("REPORT FOR CLASS EXECUTION: " + reportBuilder);
+            super.finished(description);
+        }
+    };
 
     @Rule
     public final TestWatcher watcher = new TestWatcher() {
+        long startTime;
+
         @Override
         protected void starting(Description description) {
+            startTime = System.nanoTime();
             super.starting(description);
         }
 
         @Override
         protected void finished(Description description) {
+            long endTime = System.nanoTime();
+            long duration = (endTime - startTime) / 1_000_000; // get milliseconds
+            String report = description.getMethodName() + " " + duration + " ms";
+            reportBuilder.append(report).append('\n');
+            log.info("EXECUTION TIME: " + report);
             super.finished(description);
         }
     };
