@@ -31,6 +31,9 @@ public class JpaMealRepository implements MealRepository {
             return meal;
         } else {
             Meal savedMeal = em.find(Meal.class, meal.id());
+            if (savedMeal == null) {
+                return null;
+            }
             User savedUser = savedMeal.getUser();
             if (savedUser.id() == userId) {
                 meal.setUser(savedMeal.getUser());
