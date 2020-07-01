@@ -32,7 +32,7 @@ import static ru.javawebinar.topjava.UserTestData.USER_ID;
 @RunWith(SpringRunner.class)
 @Sql(scripts = "classpath:db/populateDB.sql", config = @SqlConfig(encoding = "UTF-8"))
 public class MealServiceTest {
-    private static final Logger log = LoggerFactory.getLogger(MealRestController.class);
+    private static final Logger log = LoggerFactory.getLogger(MealServiceTest.class);
     private static final StringBuilder reportBuilder = new StringBuilder().append('\n');
 
     @ClassRule
@@ -40,7 +40,6 @@ public class MealServiceTest {
         @Override
         protected void finished(Description description) {
             log.info("REPORT FOR CLASS EXECUTION: " + reportBuilder);
-            super.finished(description);
         }
     };
 
@@ -51,7 +50,6 @@ public class MealServiceTest {
         @Override
         protected void starting(Description description) {
             startTime = System.nanoTime();
-            super.starting(description);
         }
 
         @Override
@@ -61,7 +59,6 @@ public class MealServiceTest {
             String report = description.getMethodName() + " " + duration + " ms";
             reportBuilder.append(report).append('\n');
             log.info("EXECUTION TIME: " + report);
-            super.finished(description);
         }
     };
 
