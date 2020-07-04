@@ -59,7 +59,7 @@ public class MealServiceTest {
     public final Stopwatch stopwatch = new Stopwatch() {
         @Override
         protected void finished(long nanos, Description description) {
-            long duration = TimeUnit.MILLISECONDS.convert(nanos, TimeUnit.NANOSECONDS);
+            long duration = TimeUnit.NANOSECONDS.toMillis(nanos);
             // pad a string without Apache Commons
             StringBuilder sb = new StringBuilder(ANSI_BLUE + description.getMethodName() + ANSI_RESET);
             while (sb.length() < MAX_WIDTH_FIELD_FOR_METHOD_NAME) {
