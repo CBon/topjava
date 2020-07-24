@@ -1,6 +1,11 @@
 package ru.javawebinar.topjava.web.meal;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.to.MealTo;
 
@@ -9,20 +14,19 @@ import java.time.LocalTime;
 import java.util.List;
 
 @Controller
-public class MealRestController extends AbstractMealController {
-    @Override
-    public Meal get(int id) {
-        return super.get(id);
-    }
+//@RequestMapping("/meals")
+public class JspMealController extends AbstractMealController {
 
-    @Override
-    public void delete(int id) {
+    @GetMapping("/meals/action/{delete}/id/{id}")
+    public String delete(Model model, @PathVariable int id) {
         super.delete(id);
+        return ("redirect:meals");
     }
 
-    @Override
-    public List<MealTo> getAll() {
-        return super.getAll();
+    @GetMapping("/meals")
+    public String getAll(Model model) {
+        model.addAttribute("meals",super.getAll());
+        return "meals";
     }
 
     @Override
